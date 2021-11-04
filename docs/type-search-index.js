@@ -1,0 +1,1 @@
+typeSearchIndex = [{"p":"model","l":"Address"},{"l":"All Classes","u":"allclasses-index.html"},{"p":"ui","l":"BlackSnail"},{"p":"model","l":"Catalogue"},{"p":"model","l":"Channel"},{"p":"model","l":"Movie"},{"p":"model","l":"Series"},{"p":"model","l":"Status"},{"p":"model","l":"Subscriber"},{"p":"model","l":"Type"}];updateSearchResults();
