@@ -3,8 +3,7 @@ package model;
 public class Catalogue{
 	private int numberOfMovies;
 	private int numberOfSeries;
-	private Movie [] movies;
-	private Series [] series;
+	private Product catalogue;
 
 
 	/**

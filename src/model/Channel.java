@@ -6,6 +6,7 @@ public class Channel{
 	private String website; //website address
 	private Subscriber [] subscribers;
 	private Address address;
+	private Product [] catalogue;
 
 	/**
 	* Constructor method that creates an instance of subscriber class
@@ -18,6 +19,7 @@ public class Channel{
 		this.nit = nit;
 		this.website = website;
 		this.subscribers = new Subscriber[50];
+		this.catalogue = new Product [85];
 	}
 
 	/**
@@ -111,6 +113,32 @@ public class Channel{
 		this.address = address;
 	}
 
+	/**
+	* Gets the full catalogue (list of products)
+	* @return catalogue, Product [], catalogue of the channel
+	*/
+	public Product [] getCatalogue() {
+		return catalogue;
+	}
+
+	/**
+	* Gets a specific product from the catalogue
+	* @param index, int, index of the element
+	* @return product, Product, instance of the product class
+	*/
+	public Product getProduct(int index) {
+		return catalogue[index];
+	}
+
+	/**
+	* Sets a specific product into the list
+	* @param index, int, index of the empty position
+	* @param product, Product, instance of the product class
+	*/
+	public void setProduct(int index, Product product){
+		this.catalogue[index] = product;
+	}
+
 
 	/**
 	* Verifies the existence of at least one registered subscriber
@@ -189,7 +217,7 @@ public class Channel{
 		
 		return flag;
 	}
-	/*
+	/**
 	* Creates an instance of the class address into Channel
 	* @param department, String, it is the name of the department (For example: Valle del Cauca)
 	* @param municipality, String, it is the name of the municipality (For example: Cali)
@@ -355,7 +383,345 @@ public class Channel{
 
 		return toString;
 	}
+//------------------------------------------------------------------------------------------------- Products section (temporal)
 
+	/**
+	* Creates an instance of the class movie into Channel
+	* @param director, String, it is the director's name of the movie (For example: James Cameron)
+	* @param synopsis, String, it is synopsis of the movie (For example: 
+	* En un exuberante planeta llamado Pandora viven los Na'vi, seres que aparentan 
+	* ser primitivos pero que en realidad son muy evolucionados. Debido a que el ambiente de Pandora es venenoso, los híbridos humanos/Na'vi, llamados 
+	* Avatares, están relacionados con las mentes humanas, lo que les permite moverse libremente por Pandora. Jake Sully, un exinfante de marina 
+	* paralítico se transforma a través de un Avatar, y se enamora de una mujer Na'vi.)
+
+	* @param day, int, it is the day of the date (For example: 17)
+	* @param month, int, it is the month of the date (For example: 12)
+	* @param year, int, it is the year of the date (For example: 2009)
+	* @param originalTitle, String, it is the original title of the movie (For example: Avatar)
+	* @param minimumAge, int, it is the minimum age allowed to watch the movie (For example: 13)
+	* @param productionCompanyName, String, it is production company's name (For example: 20th Century Studios)
+	* @param linkOfTrailer, String, it is the link of the trailer (For example: https://www.youtube.com/watch?v=Xg8kYk6uHN0)
+	* @param genre, int, it is a number that representates a genre (For example: 2 (Action))
+	*/
+	public int addProduct(String director, String synopsis, int day, int month, int year, String originalTitle, int minimumAge, String productionCompanyName, String linkOfTrailer, int genre ) {
+		boolean flag = false;
+		Genre movieGenre = Genre.ROMANCE;
+		Date releaseDate = new Date(day, month, year);
+
+		switch (genre){
+			case 1: 
+				movieGenre = Genre.ROMANCE;
+			break; 
+
+			case 2: 
+				movieGenre = Genre.ACTION;
+			break;
+
+			case 3: 
+				movieGenre = Genre.SUSPENSE;
+			break;
+
+			case 4:
+				movieGenre = Genre.TERROR;
+			break;
+
+			case 5:
+				movieGenre = Genre.COMEDY;
+			break;
+
+		}
+
+		int i = 0;
+		
+		for (i = 0 ;i < catalogue.length && !flag; i++) {
+			if (catalogue[i] == null) {
+				setProduct(i, new Movie(director, synopsis, releaseDate, originalTitle, minimumAge, productionCompanyName, linkOfTrailer, movieGenre));
+				flag = true;
+			}
+		}
+		
+
+		return i-1;
+
+	}
+
+	/**
+	* Creates an instance of the class series
+	* @param director, String, it is the director's name of the series (For example: Frank Darabont)
+	* @param synopsis, String, it is synopsis of the series (For example:
+	* The Walking Dead está basada en un mundo post-apocalíptico repleto de zombis, llamados caminantes, en el que un grupo de supervivientes 
+	* debe de luchar por su vida frente a la plaga de estos y los peligros de otros grupos de humanos hostiles.)
+	* @param day, int, it is the day of the date (For example: 17)
+	* @param month, int, it is the month of the date (For example: 12)
+	* @param year, int, it is the year of the date (For example: 2009)
+	* @param originalTitle, String, it is the original title of the series 
+
+	* @param protagnistsNames, String [], it is an array of the serie's protagonists
+	* @param censorship, int, it is a number that representates a censorship (For example: 1 (Censored))
+	* @param censorshipReason, String, it is the reason why the series was censored
+	* @return i-1, if this operation is equal to -1, it means that the name in the paramter is already taken, otherwise this operation will be the position where 
+	* the product was added
+	*/
+	public int addProduct(String director, String synopsis, int day, int month, int year, String originalTitle, String [] protagnistsNames, int censorship, String censorshipReason) {
+		boolean flag = false;
+		Date releaseDate = new Date(day, month, year);
+		Censorship seriesCensorship = Censorship.CENSORED;
+		switch (censorship){
+			case 1: 
+				seriesCensorship = Censorship.CENSORED;
+			break; 
+
+			case 2: 
+				seriesCensorship = Censorship.UNCENSORED;
+			break;
+		}
+
+		int i = 0;
+		
+		for (i = 0 ;i < catalogue.length && !flag; i++) {
+			if (catalogue[i] == null) {
+				setProduct(i, new Series(director, synopsis, releaseDate, originalTitle, protagnistsNames, seriesCensorship, censorshipReason));
+				flag = true;
+			}
+		}
+		
+		
+
+		return i-1;
+	}
+
+
+	/**
+	* @param numberOfSeason, int, it is the number of the season
+	* @param amountOfProgrammedEpisodes, int, it is the number of episodes programmed
+	* @param linkOfTrailer, String, it is the link of the season's trailer
+	* @param releaseDate, Date, it is the date of the serie's release (For example: (mm/dd/y) 31/10/2010)
+	* @param day, int, it is the day of the date (For example: 17)
+	* @param month, int, it is the month of the date (For example: 12)
+	* @param year, int, it is the year of the date (For example: 2009) 
+	*/
+	public void addSeason(int index,int numberOfSeason, int amountOfProgrammedEpisodes, String linkOfTrailer, int day, int month, int year){
+		boolean flag = false;
+		Date releaseDate = new Date(day, month, year);
+		if (catalogue[index] instanceof Series) {
+			Series series = (Series) catalogue[index];
+			series.addSeason(new Season (numberOfSeason, amountOfProgrammedEpisodes, linkOfTrailer, releaseDate));
+			catalogue[index] = series;
+		}
+		
+	}
+	
+	/** 
+	* Returns the index of the product that matches with the name or title entered as parameter
+	* @param title, String, name that will be tried to find
+	* @return  matchFound, int, index of the product that matches with the name entered as parameter, the value will be -1 otherwise
+	*/
+	public int productTitleMatch(String title) {
+		int matchFound = -1;
+		boolean flag = false;
+		String productTitle = "";
+		for (int i = 0; i < catalogue.length && !flag; i++ ) {
+			if (catalogue[i] != null) {
+				productTitle = catalogue[i].getOriginalTitle();
+			}
+			if (productTitle.equals(title)) {
+				matchFound = i;
+				flag = true;
+			}
+		}
+
+		return matchFound;
+	}
+	
+	/**
+	* Verifies the existence of at least one registered product
+	* @return out, boolean, it is true if exists at least one registered product, false otherwise
+	*/
+	public boolean verifyExistenceOfAtLeastOneProduct(){
+		boolean out = false;
+		for (int i = 0; i < catalogue.length; i++ ) {
+			if (catalogue[i] != null) {
+			out = true;
+			}
+		}
+		return out;
+	}
+
+	/**
+	* Verifies the existence of at least one registered series
+	* @return out, boolean, it is true if exists at least one registered series, false otherwise
+	*/
+	public boolean verifyExistenceOfAtLeastOneSeries(){
+		boolean out = false;
+		for (int i = 0; i < catalogue.length; i++ ) {
+			if (catalogue[i] != null && catalogue[i] instanceof Series) {
+			out = true;
+			}
+		}
+		return out;
+	}
+
+
+	/**
+	* Verifies the existence of at least one registered movie
+	* @return out, boolean, it is true if exists at least one registered movie, false otherwise
+	*/
+	public boolean verifyExistenceOfAtLeastOneMovie(){
+		boolean out = false;
+		for (int i = 0; i < catalogue.length; i++ ) {
+			if (catalogue[i] != null && catalogue[i] instanceof Movie) {
+			out = true;
+			}
+		}
+		return out;
+	}
+	
+
+	/**
+	* Gets the string of a product
+	* @param index, int, index of the product taken as parameter
+	* @return toString, String, the string of the product
+	*/
+	public String getStringOfProduct(int index){
+		String toString = catalogue[index].toString();
+		String censored = "";
+
+		if (catalogue[index] instanceof Series) {
+			Series series = (Series) catalogue[index];
+			censored += series.getCensorship();
+			if (censored.equals("CENSORED")) {
+				toString += " Reason of censorship: " + series.getCensorshipReason();
+			}	 
+		}
+		return toString;
+	}
+
+	/**
+	* Gets the number of the next season (which has not been created yet)
+	* @param index, int, this is the index of the product whose season's number will be got
+	* @return numberOfSeason, int, this is the number of the next season
+	*/
+	public int getNumberOfSeason(int index){
+		int numberOfSeason = 0;
+		if (catalogue[index] instanceof Series) {
+			Series series = (Series) catalogue[index];
+			numberOfSeason = series.getSeasonNumber(); 
+		}
+
+		return numberOfSeason;
+	}
+
+	/**
+	* Returns a String with the movies from a category
+	* @param genre, int, it is a number that representates a genre (For example: 2 (Action))
+	* @return listOfMovies, String, it is a String with the names of the movies from a category
+	*/
+	public String showMoviesFromACategory(int genre){
+
+		Genre movieGenre = Genre.ROMANCE;
+		String listOfMovies = "";
+		int n = 0;
+
+		switch (genre){
+			case 1: 
+				movieGenre = Genre.ROMANCE;
+			break; 
+
+			case 2: 
+				movieGenre = Genre.ACTION;
+			break;
+
+			case 3: 
+				movieGenre = Genre.SUSPENSE;
+			break;
+
+			case 4:
+				movieGenre = Genre.TERROR;
+			break;
+
+			case 5:
+				movieGenre = Genre.COMEDY;
+			break;
+
+		}
+		listOfMovies += "List of movies from " + movieGenre + " category: \n";
+		for (int i = 0; i < catalogue.length; i++ ) {
+			if (catalogue[i] != null && catalogue[i] instanceof Movie) {
+				Movie movie = (Movie) catalogue[i];
+				if (movie.getGenre().equals(movieGenre)) {
+					listOfMovies += " (" + (n+1) + ") " + movie.getOriginalTitle() + "\n";
+					n++;
+				}
+			}
+		}
+		if (n == 0) {
+			listOfMovies = "****There are not movies from " + movieGenre + " category:**** \n";
+		}
+
+		return listOfMovies;
+
+	}
+
+
+	/**
+	* Creates a String with the list of all the series
+	* @return listOfSeries, String, it is a String with the names of all the series registered
+	*/
+	public String showAllSeries(){
+		String listOfSeries = "";
+		int n = 0;
+		listOfSeries += "List of all series: \n";
+		for (int i = 0; i < catalogue.length; i++ ) {
+			if (catalogue[i] != null && catalogue[i] instanceof Series) {
+				Series series = (Series) catalogue[i];
+				listOfSeries += " (" + (n+1) + ") " + series.getOriginalTitle() + "\n";
+				n++;
+			}
+		}
+
+		return listOfSeries;
+	}
+
+	/**
+	* Counts the number of series in the catalogue
+	* @return amountOfSeries, int, amount of series in the catalogue
+	*/
+	public int getAmountOfSeries(){
+		int amountOfSeries = 0;
+		for (int i = 0; i < catalogue.length ; i++ ) {
+			if (catalogue[i] != null && catalogue[i] instanceof Series) {
+				amountOfSeries++;
+			}
+		}
+		return amountOfSeries;
+	}
+
+	/**
+	* Creates a String with the information of the last season of a series
+	* @param numberOfSeries, int, the index of the series that the user sees in console
+	* @return lastSeason, String, it is a String with the information of the last season of the series with the index taken as parameter
+	*/
+	public String showLastSeason(int numberOfSeries){
+		String lastSeason = "";
+		int indexOfLastSeason = 0;
+		int n = 0;
+		int i = 0;
+		for (i = 0; i < catalogue.length && n != numberOfSeries; i++ ) {
+			if (catalogue[i] != null && catalogue[i] instanceof Series) {
+				n++;
+			}
+		}
+		Series series = (Series) catalogue[i-1];
+		System.out.println("Indice de la ultima temporada registrada " + series.getSeasonNumber());
+		indexOfLastSeason = series.getSeasonNumber() - 2;
+		lastSeason += "Information of the last season of the series " + series.getOriginalTitle() + "\n" + series.getSeasonData(indexOfLastSeason);
+		return lastSeason;
+	}
+
+
+
+
+//----------------------------------------------------------------------------------------------------------------------------
 
 	/**
 	* Creates a string with the information of the channel

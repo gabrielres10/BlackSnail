@@ -59,18 +59,25 @@ public class BlackSnail {
 	/**
 	* Executes the operation chosen by the user, according the number of the option
 	* @param operation, int, the number of the option chosen by the user
+	* @return option, int, variable with the option selected by the user
 	*/
 	public void executeOperation(int operation) {
-		
+		int option;
 		switch(operation) {
 		case 0:
 			System.out.println("Bye!");
 			break;
 		case 1:
-			showMenuSubscriber();
+			do{
+				option = showMenuSubscriber();
+			}while(option != 0);
+			
 			break;
 		case 2:
-			showMenuCatalogue();
+			do{
+			option = showMenuCatalogue();
+			}while(option != 0);
+			
 			break;
 		case 3:
 			showMenuServices();
@@ -86,10 +93,10 @@ public class BlackSnail {
 	/**
 	* Shows the menu of the subscriber management, and executes the option chosen by the user
 	*/
-	public void showMenuSubscriber() {
+	public int showMenuSubscriber() {
 		int option = 0;
 		System.out.println(
-			"**** Subscriber Menu **** \n" +
+			"SUBSCRIBER MENU, select an option \n" +
 			"(1) Add a new subscriber \n" +
 			"(2) Deactivate a subscriber \n" +
 			"(3) Show active subscribers \n" +
@@ -112,6 +119,8 @@ public class BlackSnail {
 			showMostHoursOfContentConsumption();
 			break;
 		}
+
+		return option;
 	}
 
 
@@ -132,16 +141,16 @@ public class BlackSnail {
 		String houseNumber = "";
 
 		System.out.println(" ....This is the channel creation format.... \n" + 
-			"The default name of the channel is " + name + ", Do you want to change it? \n" +
-			"(1) Yes \n"+
-			"(2) No"
+			"  The default name of the channel is " + name + ", Do you want to change it? \n" +
+			" (1) Yes \n"+
+			" (2) No"
 			);
 
 		if (askForYesOrNoAnswer()) {
 			System.out.printf(" Name of the channel: ");
 			name = sc.nextLine();
 		}else{
-			System.out.println(" Name of the channel: " + name);
+			System.out.println(" Name of the channel: \n" + name);
 			name = name;
 		}
 
@@ -169,7 +178,7 @@ public class BlackSnail {
 
 		myChannel.addAddress(department, municipality, neighborhood, streetType, streetNumber, houseNumber);
 
-		System.out.println("The channel has been created successfully");
+		System.out.println("**** The channel has been created successfully ****");
 
 	}
 
@@ -185,7 +194,7 @@ public class BlackSnail {
 		int hours;
 		int clientType;
 
-		System.out.println("....Registration of a new subscriber.... \n" +
+		System.out.println(" ....Registration of a new subscriber.... \n" +
 			" Type the full name of the subscriber: " );
 		name = sc.nextLine();
 
@@ -220,10 +229,10 @@ public class BlackSnail {
 	
 		if (myChannel.addSubscriber(name, identificationCard, age, hours, clientType)) {
 
-			System.out.println(" **** The subscriber has been registered successfully **** "); 
+			System.out.println("**** The subscriber has been registered successfully **** "); 
 		}else{
 
-			System.out.println(" Warning! the limit of subscriber has been reached");
+			System.out.println("Warning! the limit of subscribers has been reached");
 		}
 		
 
@@ -239,24 +248,6 @@ public class BlackSnail {
 		int option = 0;
 		do{
 			option = askForNumber();
-			switch (option) {
-				case 1:
-					option = 1;
-				break;
-
-				case 2: 
-					option = 2;
-				break;
-
-				case 3:
-					option = 3;
-				break;
-
-				case 4:
-					option = 4;
-				break;
-			}
-
 			if (option > 4 || option <= 0) {
 				System.out.println("You must answer \"1\", \"2\", \"3\" or \"4\" ");
 			}
@@ -276,7 +267,7 @@ public class BlackSnail {
 		int indexOfDeactivation;
 
 
-		System.out.println("Type the ID of the subscriber that you want to deactivate: ");
+		System.out.println(" Input the ID of the subscriber that you want to deactivate: ");
 
 		do{
 			identificationCard += askForNumber();
@@ -285,9 +276,9 @@ public class BlackSnail {
 				myChannel.deactivateSubscriber(indexOfDeactivation);
 
 
-				System.out.println("The subscriber has been deactivated successfully ");
+				System.out.println(" The subscriber has been deactivated successfully ");
 			}else{
-				System.out.println("The ID entered does not exist");
+				System.out.println(" The ID entered does not exist");
 			}
 		}while(indexOfDeactivation == -1);
 	}
@@ -301,12 +292,12 @@ public class BlackSnail {
 		//String [] activeNormalSubscribers =  myChannel.getActiveNormalSubscribers();
 		int i = 0;
 
-		System.out.println("The amount of active subscribers is : " + myChannel.getActiveSubscribersNumber() + ", distributed in the form below");
+		System.out.println(" The amount of active subscribers is : " + myChannel.getActiveSubscribersNumber() + ", distributed in the form below");
 
-		System.out.println(" NORMAL: " + myChannel.getActiveNormalSubscribersNumber() +
-			"\n PLATINUM: " + myChannel.getActivePlatinumSubscribersNumber() +
-			"\n GOLD: " + myChannel.getActiveGoldSubscribersNumber() +
-			"\n DIAMOND: " + myChannel.getActiveDiamondSubscribersNumber()
+		System.out.println("  NORMAL: " + myChannel.getActiveNormalSubscribersNumber() +
+			"\n  PLATINUM: " + myChannel.getActivePlatinumSubscribersNumber() +
+			"\n  GOLD: " + myChannel.getActiveGoldSubscribersNumber() +
+			"\n  DIAMOND: " + myChannel.getActiveDiamondSubscribersNumber()
 			);
 
 
@@ -316,7 +307,7 @@ public class BlackSnail {
 	* Executes the necessary operations to show the young subscriber with most hours of content consumption
 	*/
 	public void showMostHoursOfContentConsumption(){
-		System.out.println("...This is the system that shows the young subscriber with most hours of consumption...");
+		System.out.println(" ....This is the system that shows the young subscriber with most hours of consumption.... ");
 		String stringOfSubscriber = "";
 
 		if (myChannel.verifyExistenceOfAtLeastOneSubscriber()) {
@@ -325,11 +316,11 @@ public class BlackSnail {
 				stringOfSubscriber = myChannel.getStringOfSubscriber(index);
 				System.out.println(stringOfSubscriber);
 			}else{
-				System.out.println(" ***** Any young subscriber registered yet ***** ");
+				System.out.println("***** Any young subscriber registered yet ***** ");
 			}	
 			
 		}else{
-			System.out.println(" ***** There is not any subscriber registered yet ***** ");
+			System.out.println("***** There is not any subscriber registered yet ***** ");
 		}
 		
 
@@ -337,9 +328,318 @@ public class BlackSnail {
 
 	/**
 	* Shows the menu of the catalogue management
+	* @return option, int, variable with the option selected by the user
 	*/
-	public void showMenuCatalogue() {
+	public int showMenuCatalogue() {
+		int option = 0;
+		System.out.println(
+			"CATALOGUE MENU, select an option \n" +
+			"(1) Add product \n" +
+			"(2) Show information of a product \n" +
+			"(3) Create next season of a series \n" +
+			"(4) Show movies from a category \n" +
+			"(5) Show series and their last season \n" +
+			"(0) <- Back"
+			);
+		option = askForNumber();
 
+		switch(option) {
+		case 1:
+			createProducts();
+			break;
+		case 2:
+			searchProduct();
+			break;
+		case 3: 
+			createNextSeason();
+			break;
+		case 4:
+			showCategoryOfMovies();
+			break;
+		case 5:
+			showSeriesAndLastSeason();
+		}
+		return option;
+	}
+
+
+	/** 
+	* Creates a product with the information given by the user
+	*/
+	public void createProducts(){
+		String product;
+		String originalTitle;
+		String director;
+		String synopsis;
+		int day;
+		int month;
+		int year;
+		int minimumAge;
+		String productionCompanyName;
+		String linkOfTrailer;
+		int genre;
+		//
+		String [] protagonists = new String [100];
+		int censorship;
+		String censorshipReason = "";
+		//
+		int numberOfSeason;
+		int programmedEpisodes;
+
+		System.out.println( " Which product do you want to create? \n" +
+			" (1) Movie \n" + 
+			" (2) Series ");
+		boolean answer = askForYesOrNoAnswer();
+		if (answer) {
+			product = "movie";
+		}else{
+			product = "series";
+		}
+		
+		System.out.println(" ....This is the " + product + " creation format....");
+		System.out.println(" Director of the " + product + ": ");
+		director = sc.nextLine();
+		System.out.println(" Synopsis of the " + product + ": ");
+		synopsis = sc.nextLine();
+
+		System.out.println("  Release date of the " + product + ": ");
+		System.out.println(" day: ");
+		day = askForNumber();
+		System.out.println(" month: ");
+		month = askForNumber();
+		System.out.println(" year: ");
+		year = askForNumber();
+		do{
+			System.out.println( "Original title: ");
+			originalTitle = sc.nextLine();
+			if (myChannel.productTitleMatch(originalTitle) != -1) {
+				System.out.println("This name is already registered, please input a different one");
+			}
+		}while(myChannel.productTitleMatch(originalTitle) != -1);
+
+		if (answer) {
+			System.out.println(" Minimum age to watch the " + product + ": ");
+			minimumAge = askForNumber();
+			System.out.println(" Name of the production company: ");
+			productionCompanyName = sc.nextLine();
+			System.out.println(" Link of the trailer: ");
+			linkOfTrailer = sc.nextLine();
+
+			System.out.println("  Select the genre of the " + product + " \n" + 
+				" (1) ROMANCE \n" + 
+				" (2) ACTION \n" +
+				" (3) SUSPENSE \n" +
+				" (4) TERROR\n" + 
+				" (5) COMEDY");
+			genre= selectGenre();
+
+			//the product is added:
+			if (myChannel.addProduct(director, synopsis, day, month, year, originalTitle, minimumAge, productionCompanyName, linkOfTrailer, genre) != -1) {
+				System.out.println("**** The product has been added successfully ****");
+			}else{
+				System.out.println(" Warning! the limit of products has been reached");
+			}
+		}else{
+			System.out.println(" Protagonists of the series: ");
+			int n = 0;
+			do{
+				System.out.println(" Protagonist #" + (n+1) + ": ");
+				protagonists[n] = sc.nextLine();
+				n++;
+				System.out.println("  Do you want to add another protagonist? \n" +
+					" (1) Yes \n" +
+					" (2) No");
+			}while(askForYesOrNoAnswer());
+			System.out.println("  Has the series been censored?\n" +
+					" (1) Yes \n" +
+					" (2) No");
+			do{
+				censorship = askForNumber();
+			}while(censorship != 1 && censorship != 2);
+			if (censorship == 1) {
+				System.out.println(" What is the reason of the censorship?");
+				censorshipReason = sc.nextLine();
+			}
+			//the product is added:
+			int index = myChannel.addProduct(director, synopsis, day, month, year, originalTitle, protagonists, censorship, censorshipReason);
+			System.out.println("  To create a series, you must create the first season: ");
+			System.out.println(" Number of the new season: \n" + myChannel.getNumberOfSeason(index));
+			numberOfSeason = 1;
+			System.out.println(" Amount of programmed episodes");
+			programmedEpisodes = askForNumber();
+			System.out.println(" Link of the trailer: ");
+			linkOfTrailer = sc.nextLine();
+			System.out.println("  Release date of the season: ");
+			System.out.println(" day: ");
+			day = askForNumber();
+			System.out.println(" month: ");
+			month = askForNumber();
+			System.out.println(" year: ");
+			year = askForNumber();
+			if (index != -1){
+				myChannel.addSeason(index, numberOfSeason, programmedEpisodes, linkOfTrailer, day, month, year);
+				System.out.println("**** The product has been added successfully ****");
+			}else{
+				System.out.println("Warning! the limit of products has been reached");
+			}
+			//the season for the product is added:
+			
+		}
+
+	}
+
+
+	/**
+	* Returns an int value, according to the option given by the user
+	* @return option, int, an integer between 1 and 5 that corresponds to one of the options
+	*/
+	public int selectGenre(){
+		int option = 0;
+		do{
+			option = askForNumber();
+			if (option > 5 || option <= 0) {
+				System.out.println("You must answer \"1\", \"2\", \"3\", \"4\" or \"5\" ");
+			}
+
+		}while(option > 5 || option <= 0);
+
+		return option;
+	}
+
+
+	/**
+	* Shows a product searched by the user
+	*/
+	public void searchProduct() {
+		if (myChannel.verifyExistenceOfAtLeastOneProduct()) {
+			String title;
+			int index;
+			String stringOfProduct = "";
+
+			System.out.println(" ....Search a product format....");
+			System.out.println(" Input the name of the product that you want to search");
+			do{
+				title = sc.nextLine();
+				index = myChannel.productTitleMatch(title);
+				if ( index == -1) {
+					System.out.println(" There is no product with that name!");
+				}else{
+					stringOfProduct = myChannel.getStringOfProduct(index);
+				}
+			}while(index == -1);
+
+			System.out.println(stringOfProduct);
+		}else{
+			System.out.println("***** There is not any product registered yet ***** ");
+		}
+		
+
+	}
+
+
+	/**
+	* Creates the next season of a product by searching its name / title
+	*/
+	public void createNextSeason() {
+
+		String title;
+		int day;
+		int month;
+		int year;
+		String linkOfTrailer;
+		int numberOfSeason;
+		int programmedEpisodes;
+		int index;
+
+		if (myChannel.verifyExistenceOfAtLeastOneSeries()) {
+			System.out.println(" Input the title of the series for which you want to create the next season");
+			do{
+				title = sc.nextLine();
+				index = myChannel.productTitleMatch(title);
+				if ( index == -1) {
+					System.out.println(" There is no series with that name!");
+				}
+			}while(index == -1);
+
+			numberOfSeason = myChannel.getNumberOfSeason(index);
+			System.out.println(" Number of the new season: \n" + numberOfSeason);
+			
+			System.out.println(" Amount of programmed episodes");
+			programmedEpisodes = askForNumber();
+			System.out.println(" Link of the trailer: ");
+			linkOfTrailer = sc.nextLine();
+			System.out.println("  Release date of the season: ");
+			System.out.println(" day: ");
+			day = askForNumber();
+			System.out.println(" month: ");
+			month = askForNumber();
+			System.out.println(" year: ");
+			year = askForNumber();
+			myChannel.addSeason(index, numberOfSeason, programmedEpisodes, linkOfTrailer, day, month, year);
+			System.out.println("**** The season has been created successfully ****");
+		}else{
+			System.out.println("***** There is not any series registered yet ***** ");
+		}
+		
+	}
+
+	/**
+	* Shows a list of movies from a category
+	*/
+	public void showCategoryOfMovies(){
+		int genre;
+
+		if (myChannel.verifyExistenceOfAtLeastOneMovie()) {
+			System.out.println(" ....This is the system that shows a list of movies from a category....");
+
+			System.out.println("  Select the category of the movie \n" + 
+					" (1) ROMANCE \n" + 
+					" (2) ACTION \n" +
+					" (3) SUSPENSE \n" +
+					" (4) TERROR\n" + 
+					" (5) COMEDY");
+			genre = selectGenre();
+			System.out.println(myChannel.showMoviesFromACategory(genre));
+		}else{
+			System.out.println("***** There is not any movie registered yet ***** ");
+		}
+
+	}
+
+	/**
+	* Shows all the series and the last season of the season that the user selects
+	*/
+	public void showSeriesAndLastSeason(){
+		int amountOfSeries;
+		int numberOfSeries;
+
+		if (myChannel.verifyExistenceOfAtLeastOneSeries()) {
+			System.out.println(myChannel.showAllSeries());
+			System.out.println(" - Consult the last season one of the series - ");
+			System.out.println("Number of the series: (from the list)");
+			numberOfSeries = selectSeries();
+			System.out.println(myChannel.showLastSeason(numberOfSeries));
+		}else{
+			System.out.println("***** There is not any series registered yet ***** ");
+		}
+	}
+
+	/**
+	* Returns an int value, according to the option given by the user
+	* @return option, int, an integer between 1 and the number of series that corresponds to one of the series
+	*/
+	public int selectSeries(){
+		int option = 0;
+		int numberOfSeries = myChannel.getAmountOfSeries();
+		do{
+			option = askForNumber();
+			if (option > numberOfSeries || option <= 0) {
+				System.out.println("Your answer must be between \"1\" and \"" + numberOfSeries + "\"");
+			}
+
+		}while(option > numberOfSeries || option <= 0);
+
+		return option;
 	}
 
 	/**
@@ -381,7 +681,7 @@ public class BlackSnail {
 	public boolean askForYesOrNoAnswer(){
 		int input = 0; 
 		boolean answer = true;
-		boolean validInput = true;
+		boolean validInput = false;
 		do{
 			input = askForNumber();
 			if (input != 1 && input != 2) {
